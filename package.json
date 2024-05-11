@@ -22,6 +22,7 @@
 		"vitest": "^1.6.0"
 	},
 	"dependencies": {
+		"fractional": "^1.0.0",
 		"jsdoc": "^4.0.3"
 	}
 }
