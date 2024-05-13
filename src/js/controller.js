@@ -17,6 +17,7 @@ export const controlRecipe = async function () {
 		// Rendering recipes
 		recipeView.render(state.recipe);
 	} catch (error) {
+		recipeView.renderError();
 		console.error(error);
 	}
 };
