@@ -13,7 +13,7 @@ export const state = {
  * @returns {JSON} | The JSON data fetched from url
  */
 
-const fetchRecipe = async function (url) {
+export const fetchRecipe = async function (url) {
 	try {
 		const data = await fetchData(url);
 

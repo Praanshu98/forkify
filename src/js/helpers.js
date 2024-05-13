@@ -5,7 +5,7 @@ import { TIMEOUT_SECONDS } from "./config";
  * @param {number} seconds | The number of seconds to wait before throwing timeout error.
  * @returns {promise} | The rejected promise
  */
-const timeout = function (seconds) {
+export const timeout = function (seconds) {
 	return new Promise(function (_, reject) {
 		setTimeout(function () {
 			reject(

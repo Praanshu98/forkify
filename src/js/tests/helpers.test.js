@@ -1,5 +1,5 @@
 import { vi } from "vitest";
-import { fetchData, fetchRecipe, timeout } from "./controller";
+import { fetchData, timeout } from "../helpers.js";
 
 // Mock the fetch function
 global.fetch = vi.fn();
@@ -76,59 +76,5 @@ describe("fetchData()", () => {
 
 		// Expect fetchData to throw a network error
 		await expect(fetchData(testInput)).rejects.toThrow("Network error");
-	});
-});
-
-describe("fetchRecipe()", () => {
-	const testInput = "https://api.test.com/data";
-	const testData = {
-		publisher: "Test User",
-		ingredients: [],
-		sourceUrl: "http://www.test-recipe.com/recipe1",
-		imageUrl: "http://test-recipe.com/images/dish.jpg",
-		title: "Test Recipe",
-		servings: 4,
-		cookingTime: 45,
-		id: "dish1",
-	};
-	fetch.mockImplementation(() => {
-		return Promise.resolve({
-			ok: true,
-			json() {
-				return Promise.resolve({
-					data: {
-						status: "success",
-						recipe: {
-							publisher: "Test User",
-							ingredients: [],
-							source_url: "http://www.test-recipe.com/recipe1",
-							image_url: "http://test-recipe.com/images/dish.jpg",
-							title: "Test Recipe",
-							servings: 4,
-							cooking_time: 45,
-							id: "dish1",
-						},
-					},
-				});
-			},
-		});
-	});
-	it("should return recipe object when called", async () => {
-		expect(fetchRecipe(testInput)).resolves.toEqual(testData);
-	});
-
-	it("should throw error if fetch throws error", async () => {
-		fetch.mockImplementationOnce(() =>
-			Promise.resolve({
-				ok: false,
-				status: 404,
-				json: () => Promise.resolve({}),
-			}),
-		);
-		await expect(fetchData(testInput)).rejects.toThrow();
-	});
-
-	it("should return type of object", () => {
-		expect(fetchRecipe(testInput)).resolves.toBeTypeOf("object");
 	});
 });

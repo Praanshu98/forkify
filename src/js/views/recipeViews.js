@@ -1,7 +1,7 @@
 import { Fraction } from "fractional";
-import icons from "url:../../img/icons.svg";
+import icons from "../../img/icons.svg";
 
-class RecipeView {
+export class RecipeView {
 	#data;
 	#parentElement = document.querySelector(".recipe");
 
@@ -19,7 +19,7 @@ class RecipeView {
           </svg>
         </div>
 	`;
-		this.#parentElement.innerHTML = "";
+		this.#clear();
 		this.#parentElement.insertAdjacentHTML("afterbegin", html);
 	}
 
