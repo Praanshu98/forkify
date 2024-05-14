@@ -5,6 +5,12 @@ export const state = {
 	recipe: {
 		// Recipe object
 	},
+	search: {
+		query: "",
+		result: {
+			// Result object for query
+		},
+	},
 };
 
 /**
@@ -36,4 +42,22 @@ export const fetchRecipe = async function (url) {
 export const loadRecipe = async function (id) {
 	const url = `${API_URL}/${id}`;
 	await fetchRecipe(url);
+};
+
+export const loadSearchResult = async function (query) {
+	try {
+		state.search.query = query;
+		const data = await fetchData(`${API_URL}?search=${query}`);
+
+		state.search.result = data.data.recipes.map((recipe) => {
+			return {
+				id: recipe.id,
+				publisher: recipe.publisher,
+				title: recipe.title,
+				imageUrl: recipe.image_url,
+			};
+		});
+	} catch (error) {
+		throw Error(error);
+	}
 };
