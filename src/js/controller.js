@@ -1,4 +1,10 @@
-import { loadRecipe, loadSearchResult, state } from "./model";
+import {
+	getSearchResultsPage,
+	loadRecipe,
+	loadSearchResult,
+	state,
+} from "./model";
+import paginationViews from "./views/paginationViews";
 import recipeViews from "./views/recipeViews";
 import resultsViews from "./views/resultsViews";
 import searchViews from "./views/searchViews";
@@ -36,14 +42,28 @@ export const controlSearchResult = async function () {
 		await loadSearchResult(query);
 
 		// Rendering Search Result
-		resultsViews.render(state.search.result);
+		resultsViews.render(getSearchResultsPage());
+
+		// Rendering Pagination buttons
+		paginationViews.render(state.search);
 	} catch (error) {
 		console.error(error);
 	}
 };
 
+export const controlPagination = function (pageNumber) {
+	console.log(pageNumber);
+
+	// Rendering New Search Result
+	resultsViews.render(getSearchResultsPage(pageNumber));
+
+	// Rendering New Pagination buttons
+	paginationViews.render(state.search);
+};
+
 const init = function () {
 	recipeViews.addHandlerRender(controlRecipe);
 	searchViews.addHandlerSearch(controlSearchResult);
+	paginationViews.addHandlerClick(controlPagination);
 };
 init();
