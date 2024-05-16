@@ -16,6 +16,45 @@ export default class View {
 		this._clear();
 		this._parentElement.insertAdjacentHTML("afterbegin", markup);
 	}
+
+	update(data) {
+		// Update element
+		if (!data || (Array.isArray(data) && data.length === 0))
+			return this.renderError();
+
+		this._data = data;
+		const newMarkup = this._generateMarkup();
+
+		const newDOM = document
+			.createRange()
+			.createContextualFragment(newMarkup);
+		const newElements = Array.from(newDOM.querySelectorAll("*"));
+		const currentElements = Array.from(
+			this._parentElement.querySelectorAll("*"),
+		);
+		newElements.forEach((newElement, index) => {
+			const currentElement = currentElements[index];
+
+			// Update (render) servings and ingredients numbers
+			if (
+				!newElement.isEqualNode(currentElement) &&
+				newElement.firstChild?.nodeValue.trim() !== ""
+			) {
+				currentElement.textContent = newElement.textContent;
+			}
+
+			// Update data value of servings number in element
+			if (!newElement.isEqualNode(currentElement)) {
+				Array.from(newElement.attributes).forEach((attribute) => {
+					currentElement.setAttribute(
+						attribute.name,
+						attribute.value,
+					);
+				});
+			}
+		});
+	}
+
 	renderSpinner() {
 		const html = `
 		<div class="spinner">

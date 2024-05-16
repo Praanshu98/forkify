@@ -3,6 +3,7 @@ import {
 	loadRecipe,
 	loadSearchResult,
 	state,
+	updateServings,
 } from "./model";
 import paginationViews from "./views/paginationViews";
 import recipeViews from "./views/recipeViews";
@@ -20,6 +21,9 @@ export const controlRecipe = async function () {
 	recipeViews.renderSpinner();
 
 	try {
+		// Update results view to mark selected search result
+		resultsViews.update(getSearchResultsPage());
+
 		// Fetching recipes
 		await loadRecipe(id);
 		// Rendering recipes
@@ -61,8 +65,17 @@ export const controlPagination = function (pageNumber) {
 	paginationViews.render(state.search);
 };
 
+const controlServings = function (newServings) {
+	// Update the recipe servings ( in the state )
+	updateServings(newServings);
+
+	// Update the recipe view
+	recipeViews.update(state.recipe);
+};
+
 const init = function () {
 	recipeViews.addHandlerRender(controlRecipe);
+	recipeViews.addHandlerUpdateServings(controlServings);
 	searchViews.addHandlerSearch(controlSearchResult);
 	paginationViews.addHandlerClick(controlPagination);
 };
